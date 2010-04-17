@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw/jPod::Command/;
 use jPod::UserAgent;
-use Archive::Extract;
+use jPod::Archive::Bzip2;
 
 my $url = 'http://devel.cpantesters.org/uploads/uploads.db.bz2';
 
@@ -24,7 +24,10 @@ sub _run {
     my $ua = jPod::UserAgent->new( verbose => $self->{verbose} );
     $ua->mirror( $url => $bzipfile ) or return;
 
-    my $archive = Archive::Extract->new( archive => $bzipfile );
+    my $archive = jPod::Archive::Bzip2->new(
+        archive => $bzipfile,
+        verbose => $self->{verbose},
+    );
     $archive->extract( to => $dbfile );
 
     $self->log( info => "updated database successfully" );
