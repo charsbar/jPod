@@ -1,46 +1,25 @@
 use strict;
 use warnings;
-use ExtUtils::MakeMaker;
+use inc::Module::Install;
 
-my %params = (
-    NAME          => 'jPod',
-    AUTHOR        => 'Kenichi Ishigaki <ishigaki@cpan.org>',
-    VERSION_FROM  => 'lib/jPod.pm',
-    ABSTRACT_FROM => 'lib/jPod.pm',
-    LICENSE       => 'perl',
-    PREREQ_PM     => {
-    },
-    BUILD_REQUIRES => {
-        'Test::More'          => '0.47',
-        'Test::UseAllModules' => '0.10',
-    },
-    META_MERGE => {
-        resources => {
-            repository => '',
-        },
-    },
-);
+all_from 'lib/jPod.pm';
 
-my $eumm = $ExtUtils::MakeMaker::VERSION;
-delete $params{LICENSE}          if $eumm < 6.31;
-delete $params{MIN_PERL_VERSION} if $eumm < 6.48;
-delete $params{META_MERGE}       if $eumm < 6.46;
-delete $params{META_ADD}         if $eumm < 6.46;
-delete $params{LICENSE}          if $eumm < 6.31;
+requires 'CLI::Dispatch';
+requires 'DBD::SQLite' => 1.30_02; # sqlite_use_immediate_transaction
+requires 'DBI'         => 1.609;
+requires 'File::HomeDir';
+requires 'IO::Uncompress::Bunzip2';
+requires 'Log::Dump::Class';
+requires 'LWP::UserAgent';
+requires 'Path::Extended';
+requires 'Sub::Install';
 
-if ($eumm < 6.52 && $params{CONFIGURE_REQUIRES}) {
-    $params{PREREQ_PM} = {
-        %{ $params{PREREQ_PM}          || {} },
-        %{ $params{CONFIGURE_REQUIRES} },
-    };
-    delete $params{CONFIGURE_REQUIRES};
-}
-if ($eumm < 6.5503 && $params{BUILD_REQUIRES}) {
-    $params{PREREQ_PM} = {
-        %{ $params{PREREQ_PM}      || {} },
-        %{ $params{BUILD_REQUIRES} },
-    };
-    delete $params{BUILD_REQUIRES};
-}
+test_requires 'Capture::Tiny';
+test_requires 'Plack::Handler::Standalone';
+test_requires 'Test::More' => 0.88;  # done_testing
+test_requires 'Test::TCP';
+test_requires 'Test::UseAllModules';
 
-WriteMakefile(%params);
+install_script 'jpod';
+
+WriteAll;
