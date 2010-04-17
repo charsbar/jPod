@@ -32,6 +32,17 @@ sub home        { shift->{home} }
 sub private     { dir(shift->{home}, '.jpod'); }
 sub directories { (@DIRS, 'private') }
 
+sub setup {
+    my $self = shift;
+
+    for my $dir ($self->directories) {
+        unless ($self->$dir->exists) {
+            $self->$dir->mkdir
+                and $self->log( info => "created $dir directory" );
+        }
+    }
+}
+
 1;
 
 __END__

@@ -7,12 +7,7 @@ use base qw/jPod::Command/;
 sub _run {
     my ($self, $context, @args) = @_;
 
-    for my $dir ($context->directories) {
-        unless ($context->$dir->exists) {
-            $context->$dir->mkdir
-                and $self->log( info => "created $dir directory" );
-        }
-    }
+    $context->setup;
 }
 
 1;
