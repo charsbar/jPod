@@ -4,7 +4,7 @@ use inc::Module::Install;
 
 all_from 'lib/jPod.pm';
 
-requires 'CLI::Dispatch';
+requires 'CLI::Dispatch' => 0.07;  # usage
 requires 'DBD::SQLite' => 1.30_02; # sqlite_use_immediate_transaction
 requires 'DBI'         => 1.609;
 requires 'File::HomeDir';
