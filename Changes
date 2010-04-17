@@ -1,0 +1,9 @@
+Revision history for jPod
+
+0.02 (won't be released to the CPAN)
+  - started refactoring under the name of jPod at github
+
+0.01 (private)
+  - initial version, under the name of JPA::Perldoc; not released;
+    used to translate Moose::Manual in 2009, for the sake of the
+    Japan Perl Association.

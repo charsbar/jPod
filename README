@@ -1,0 +1,17 @@
+jPod
+
+HOW TO USE
+
+You usually don't need to install this application with
+"make install". Just put into somewhere under your home
+directory, and run Makefile.PL to confirm you have dependent
+modules (run cpanm if you don't have any), then run jpod
+script to learn commands.
+
+COPYRIGHT AND LICENSE
+
+Copyright (C) 2009-2010 Kenichi Ishigaki
+
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
