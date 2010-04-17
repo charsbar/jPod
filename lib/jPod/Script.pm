@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw/CLI::Dispatch/;
 
-sub options { qw/ help|h|? verbose|v home=s / }
+sub options { qw/ help|h|? verbose|v home=s force|f / }
 
 1;
 
