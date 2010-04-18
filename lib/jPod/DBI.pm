@@ -84,6 +84,13 @@ sub insert_or_update {
     }
 }
 
+sub DESTROY {
+    my $self = shift;
+    if ( $self->{dbh} ) {
+        $self->{dbh}->disconnect;
+    }
+}
+
 1;
 
 __END__

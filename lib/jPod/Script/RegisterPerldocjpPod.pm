@@ -31,7 +31,9 @@ sub _run {
         my $name_v = $entry->name . ' ' . $entry->version;
         $self->log( debug => "registered $name_v" );
     }
+    $dbi->commit;
     $dbi->end_transaction;
+    $dbi->{dbh}->disconnect;
 }
 
 1;

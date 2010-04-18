@@ -9,7 +9,8 @@ sub table { 'external_sources' }
 sub columns {(
     name       => 'text',
     version    => 'text',
-    url        => 'text',
+    pod_url    => 'text',
+    html_url   => 'text',
     source     => 'text',
     updated_on => 'int',
 )}

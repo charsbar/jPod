@@ -23,8 +23,9 @@ sub import {
     foreach my $target (@targets) {
         my $package = "jPod::Script::$target";
         use_ok($package);
+        my $target = decamelize($target);
         reinstall_sub({
-            as   => decamelize($target),
+            as   => $target,
             into => $caller,
             code => sub (&) {
                 my $test = shift;
@@ -35,7 +36,8 @@ sub import {
                 my $context = jPod::Context->new(home => $testdir);
 
                 eval { $test->($command, $context, $testdir) };
-                ok !$@, "test runs successfully";
+                ok !$@, "$target runs successfully";
+                diag $@ if $@;
             },
         });
     }

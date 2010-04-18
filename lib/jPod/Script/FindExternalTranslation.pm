@@ -14,7 +14,7 @@ sub _run {
 
     my $found = $db->look_for($name) or return;
 
-    print $found->{url}, "\n";
+    print $found->{pod_url}, "\n";
 }
 
 1;
