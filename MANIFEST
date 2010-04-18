@@ -18,6 +18,8 @@ lib/jPod/Context.pm
 lib/jPod/CPAN/Dist.pm
 lib/jPod/DBI.pm
 lib/jPod/DBI/CPAN/Uploads.pm
+lib/jPod/DBI/ExternalSources.pm
+lib/jPod/ExternalSource/Entry/Perldocjp.pm
 lib/jPod/ExternalSource/Perldocjp.pm
 lib/jPod/Log.pm
 lib/jPod/Script.pm
@@ -26,8 +28,10 @@ lib/jPod/Script/ExtractPerldocjpSource.pm
 lib/jPod/Script/Fetch.pm
 lib/jPod/Script/FetchDatabase.pm
 lib/jPod/Script/FetchPerldocjpSource.pm
+lib/jPod/Script/FindExternalTranslation.pm
 lib/jPod/Script/ListPerldocjpPod.pm
 lib/jPod/Script/ListVersions.pm
+lib/jPod/Script/RegisterPerldocjpPod.pm
 lib/jPod/Script/Setup.pm
 lib/jPod/UserAgent.pm
 lib/Test/jPod/Script.pm
