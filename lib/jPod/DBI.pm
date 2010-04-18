@@ -27,6 +27,11 @@ sub new {
     bless { file => $file, dbh => $dbh }, $class;
 }
 
+sub begin_transaction { shift->{dbh}->{AutoCommit} = 0; }
+sub end_transaction   { shift->{dbh}->{AutoCommit} = 1; }
+sub commit   { shift->{dbh}->commit }
+sub rollback { shift->{dbh}->rollback }
+
 sub select {
     my ($self, $where, @bind_values) = @_;
 
@@ -50,6 +55,33 @@ sub select_all {
     $sth->finish;
 
     return @founds;
+}
+
+sub insert_or_update {
+    my ($self, %hash) = @_;
+
+    my @unique_keys = $self->unique;
+
+    my $where = "where ". join ' and ', map { "$_ = ?" } @unique_keys;
+    my @bind_values = @hash{@unique_keys};
+    if ($self->select($where, @bind_values)) {
+        my @keys = sort keys %hash;
+        my $placeholders = join ', ', map { "$_ = ?" } @keys;
+        my $sql = join ' ', "update", $self->table,
+                            "set $placeholders",
+                            "$where";
+
+        $self->{dbh}->do($sql, undef, @hash{@keys}, @bind_values);
+    }
+    else {
+        my @keys = sort keys %hash;
+        my $placeholders = substr('?,' x @keys, 0, -1);
+        my $sql = join ' ', "insert into", $self->table,
+                            "(", join(',', @keys), ")",
+                            "values ($placeholders)";
+
+        $self->{dbh}->do($sql, undef, @hash{@keys});
+    }
 }
 
 1;
