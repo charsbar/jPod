@@ -5,33 +5,48 @@ use warnings;
 use Test::More;
 use jPod::Context;
 use Path::Extended;
-use Sub::Install 'install_sub';
+use String::CamelCase 'decamelize';
+use Sub::Install 'reinstall_sub';
+
+my $testdir;
 
 sub import {
-    my ($class, $target) = @_;
+    my ($class, @targets) = @_;
 
-    my $package = "jPod::Script::$target";
-    use_ok($package);
+    return unless @targets;
 
-    install_sub({
-        as   => 'test',
-        into => caller,
-        code => sub (&) {
-            my $test = shift;
+    my $caller = caller;
 
-            my $testdir = dir('test')->mkdir;
-            ok $testdir->exists, "created test directory";
+    my $testdir = dir('test')->mkdir;
+    ok $testdir->exists, "created test directory";
 
-            my $command = $package->new;
-               $command->set_options(verbose => $ENV{TEST_VERBOSE});
+    foreach my $target (@targets) {
+        my $package = "jPod::Script::$target";
+        use_ok($package);
+        reinstall_sub({
+            as   => decamelize($target),
+            into => $caller,
+            code => sub (&) {
+                my $test = shift;
 
-            my $context = jPod::Context->new(home => $testdir);
+                my $command = $package->new;
+                   $command->set_options(verbose => $ENV{TEST_VERBOSE});
 
-            eval { $test->($command, $context, $testdir) };
-            ok !$@, "test runs successfully";
+                my $context = jPod::Context->new(home => $testdir);
 
+                eval { $test->($command, $context, $testdir) };
+                ok !$@, "test runs successfully";
+            },
+        });
+    }
+
+    reinstall_sub({
+        as   => 'done_testing',
+        into => $caller,
+        code => sub {
             $testdir->remove;
             ok !$testdir->exists, "removed test directory";
+            Test::More::done_testing();
         },
     });
 }
