@@ -12,12 +12,13 @@ sub _run {
         dir => $context->private->subdir('perldocjp'),
     );
 
-    my %found = $perldocjp->find_pods;
+    my @found = $perldocjp->find_pods;
 
-    foreach my $package (sort keys %found) {
-        foreach my $version (sort keys %{ $found{$package} }) {
-            print "$package $version $found{$package}{$version}\n";
-        }
+    foreach my $entry (sort { $a->name cmp $b->name or $a->version <=> $b->version } @found) {
+        printf "%s %s %s\n",
+            $entry->name,
+            $entry->version,
+            $entry->path;
     }
 }
 

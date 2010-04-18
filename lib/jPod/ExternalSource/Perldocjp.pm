@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Path::Extended;
 use version;
+use jPod::ExternalSource::Entry::Perldocjp;
 
 my %known_mismatch = map { chomp; $_ => 1 } <DATA>;
 
@@ -20,8 +21,7 @@ sub find_pods {
 
     my $dir = dir( $self->{dir} );
 
-    my %found;
-    my @errors;
+    my (@found, @errors);
     $dir->recurse( depthfirst => 1, callback => sub {
         my $file = shift;
         return unless -f $file;
@@ -46,23 +46,27 @@ sub find_pods {
                 return;
             }
 
-            $version ||= 0;
-            $version =~ tr/0-9.//cd;
-            $version = version->new($version)->numify;
-            $found{$package}{$version} = "http://perldoc.jp/$path.pod";
+            push @found, jPod::ExternalSource::Entry::Perldocjp->new(
+                name    => $package,
+                version => $version,
+                path    => $path,
+            );
         }
         elsif (my ($version) = $path =~ m{docs/perl/([\d.]+)}) {
-            $version = version->new($version)->numify;
             my ($basename) = $path =~ m{([^/]+?)(\-[\d._]+)?(\.pm)?\.pod$};
 
-            $found{$basename}{$version} = "http://perldoc.jp/$path.pod";
+            push @found, jPod::ExternalSource::Entry::Perldocjp->new(
+                name    => $basename,
+                version => $version,
+                path    => $path,
+            );
         }
     });
 
     $self->{errors} = \@errors;
-    $self->{pods}   = \%found;
+    $self->{pods}   = \@found;
 
-    wantarray ? %found : \%found;
+    wantarray ? @found : \@found;
 }
 
 sub errors { @{ shift->{errors} || [] } }

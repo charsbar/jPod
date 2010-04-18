@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base qw/jPod::Command/;
 use jPod::ExternalSource::Perldocjp;
+use jPod::ExternalSource::Entry::Perldocjp;
 use jPod::DBI::ExternalSources;
 
 sub _run {
@@ -13,27 +14,22 @@ sub _run {
         dir => $context->private->subdir('perldocjp'),
     );
 
-    my %found = $perldocjp->find_pods;
+    my @found = $perldocjp->find_pods;
 
     my $dbfile = $context->private->file('external.db');
     my $dbi = jPod::DBI::ExternalSources->new($dbfile);
 
     my $counter = 0;
     $dbi->begin_transaction;
-    foreach my $package (sort keys %found) {
-        foreach my $version (sort keys %{ $found{$package} }) {
-            unless (++$counter % 1000) {
-                $dbi->commit;
-                $counter = 0;
-            }
-            $dbi->insert_or_update(
-                name    => $package,
-                version => $version,
-                url     => $found{$package}{$version},
-                source  => 'perldocjp',
-            );
-            $self->log( debug => "registered $package $version" );
+    for my $entry (@found) {
+        unless (++$counter % 1000) {
+            $dbi->commit;
+            $counter = 0;
         }
+        $dbi->insert_or_update( $entry->as_hash );
+
+        my $name_v = $entry->name . ' ' . $entry->version;
+        $self->log( debug => "registered $name_v" );
     }
     $dbi->end_transaction;
 }
