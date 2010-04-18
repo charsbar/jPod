@@ -21,7 +21,7 @@ sub look_for {
 
     my $where = 'where name = ?';
     my @bind_values = $name;
-    $where .= 'order by updated_on desc limit 1';
+    $where .= 'order by updated_on desc, version desc limit 1';
 
     my $found = $self->select( $where, @bind_values ) or return;
 
