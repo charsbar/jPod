@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 use base qw/jPod::Command/;
-use jPod::CPAN::Uploads;
+use jPod::DBI::CPAN::Uploads;
 use jPod::Archive;
 
 sub options { qw/ pod_only|pod / }
@@ -16,7 +16,7 @@ sub _run {
 
     my $dbfile = $context->private->file('uploads.db');
 
-    my $db = jPod::CPAN::Uploads->new( $dbfile );
+    my $db = jPod::DBI::CPAN::Uploads->new( $dbfile );
 
     my $found = $db->look_for(@args);
 

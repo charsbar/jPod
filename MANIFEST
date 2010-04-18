@@ -16,8 +16,8 @@ lib/jPod/Archive/Tar.pm
 lib/jPod/Command.pm
 lib/jPod/Context.pm
 lib/jPod/CPAN/Dist.pm
-lib/jPod/CPAN/Uploads.pm
 lib/jPod/DBI.pm
+lib/jPod/DBI/CPAN/Uploads.pm
 lib/jPod/ExternalSource/Perldocjp.pm
 lib/jPod/Log.pm
 lib/jPod/Script.pm

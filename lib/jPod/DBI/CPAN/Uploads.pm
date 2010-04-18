@@ -1,4 +1,4 @@
-package jPod::CPAN::Uploads;
+package jPod::DBI::CPAN::Uploads;
 
 use strict;
 use warnings;
@@ -47,7 +47,7 @@ __END__
 
 =head1 NAME
 
-jPod::CPAN::Uploads
+jPod::DBI::CPAN::Uploads
 
 =head1 SYNOPSIS
 
