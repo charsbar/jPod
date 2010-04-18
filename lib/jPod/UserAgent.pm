@@ -13,13 +13,13 @@ sub new {
         env_proxy     => 1,
         show_progress => $args{verbose},
     );
-    bless { ua => $ua }, $class;
+    bless { ua => $ua, verbose => $args{verbose} }, $class;
 }
 
 sub mirror {
     my ($self, $url, $file) = @_;
 
-    $self->log( debug => "mirroring from $url" );
+    $self->log( debug => "mirroring from $url" ) if $self->{verbose};
 
     my $response = $self->{ua}->mirror( $url => $file );
     unless ( $response->is_success ) {
