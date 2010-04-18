@@ -7,12 +7,12 @@ use base qw/jPod::DBI/;
 sub table { 'external_sources' }
 
 sub columns {(
-    name       => 'text',
-    version    => 'text',
-    pod_url    => 'text',
-    html_url   => 'text',
-    source     => 'text',
-    updated_on => 'int',
+    name     => 'text',
+    version  => 'text',
+    pod_url  => 'text',
+    html_url => 'text',
+    source   => 'text',
+    mtime    => 'int',
 )}
 
 sub unique { qw/ name version source / }
@@ -22,7 +22,7 @@ sub look_for {
 
     my $where = 'where name = ?';
     my @bind_values = $name;
-    $where .= 'order by updated_on desc, version desc limit 1';
+    $where .= 'order by mtime desc, version desc limit 1';
 
     my $found = $self->select( $where, @bind_values ) or return;
 

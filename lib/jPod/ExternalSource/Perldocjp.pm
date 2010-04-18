@@ -50,6 +50,7 @@ sub find_pods {
                 name    => $package,
                 version => $version,
                 path    => $path,
+                mtime   => $file->mtime,
             );
         }
         elsif (my ($version) = $path =~ m{docs/perl/([\d.]+)}) {
@@ -59,6 +60,7 @@ sub find_pods {
                 name    => $basename,
                 version => $version,
                 path    => $path,
+                mtime   => $file->mtime,
             );
         }
     });

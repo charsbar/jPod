@@ -20,11 +20,13 @@ sub path     { shift->{path} }
 sub html_url { "http://perldoc.jp/" . shift->{path} }
 sub pod_url  { shift->html_url . '.pod' }
 sub source   { 'perldocjp' }
+sub mtime    { shift->{mtime} }
 
 sub as_hash {
     my $self = shift;
 
-    map { $_ => $self->$_ } qw/name version pod_url html_url source/;
+    map { $_ => $self->$_ }
+    qw/name version pod_url html_url source mtime/;
 }
 
 1;

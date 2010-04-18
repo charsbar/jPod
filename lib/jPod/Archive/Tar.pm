@@ -23,24 +23,29 @@ sub extract {
     $tar->read("$archive") or croak $!;
 
     my $basename = $dir->basename;
-    foreach my $file ( $tar->list_files ) {
+    foreach my $file ( $tar->list_files([qw/name mtime/]) ) {
+        my $filename = $file->{name};
         if ($args{pod_only}) {
-            next unless $file =~ /\.(?:pod|pm)$/;
-            next if     $file =~ /\b(?:inc|t)\b/;
+            next unless $filename =~ /\.(?:pod|pm)$/;
+            next if     $filename =~ /\b(?:inc|t)\b/;
         }
 
-        $self->log( debug => "extracting $file") if $self->{verbose};
+        $self->log( debug => "extracting $filename") if $self->{verbose};
 
-        my $content = $tar->get_content($file);
+        my $content = $tar->get_content($filename);
 
         if ($args{pod_only}) {
             $content =~ s/\015\012/\012/g;
         }
 
-        $file =~ s/^$basename//;
-        $file =~ s/^[\/\\]//;
+        $filename =~ s/^$basename//;
+        $filename =~ s/^[\/\\]//;
 
-        $dir->file($file)->save($content, mkdir => 1, binmode => 1);
+        $dir->file($filename)->save($content,
+            mkdir   => 1,
+            binmode => 1,
+            mtime   => $file->{mtime},
+        );
     }
 }
 
