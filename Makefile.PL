@@ -4,6 +4,7 @@ use inc::Module::Install;
 
 all_from 'lib/jPod.pm';
 
+requires 'Archive::Tar';
 requires 'CLI::Dispatch' => 0.07;  # usage
 requires 'DBD::SQLite' => 1.30_02; # sqlite_use_immediate_transaction
 requires 'DBI'         => 1.609;
@@ -13,9 +14,12 @@ requires 'Log::Dump::Class';
 requires 'LWP::UserAgent';
 requires 'Path::Extended';
 requires 'Sub::Install';
+requires 'Time::Piece';
+requires 'version';
 
 test_requires 'Capture::Tiny';
 test_requires 'Plack::Handler::Standalone';
+test_requires 'String::CamelCase';
 test_requires 'Test::More' => 0.88;  # done_testing
 test_requires 'Test::TCP';
 test_requires 'Test::UseAllModules';
