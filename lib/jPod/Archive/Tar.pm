@@ -44,6 +44,26 @@ sub extract {
     }
 }
 
+sub files {
+    my ($self, %args) = @_;
+
+    my $tar = Archive::Tar->new;
+
+    my $archive = $self->{archive} || $args{archive};
+    $tar->read("$archive") or croak $!;
+    $tar->list_files;
+}
+
+sub get_content {
+    my ($self, %args) = @_;
+
+    my $tar = Archive::Tar->new;
+
+    my $archive = $self->{archive} || $args{archive};
+    $tar->read("$archive") or croak $!;
+    $tar->get_content($args{file});
+}
+
 1;
 
 __END__

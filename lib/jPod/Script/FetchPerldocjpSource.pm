@@ -4,8 +4,7 @@ use strict;
 use warnings;
 use base qw/jPod::Command/;
 use jPod::UserAgent;
-
-my $url = 'http://sourceforge.jp/cvs/view/perldocjp.tar.gz';
+use jPod::ExternalSource::Perldocjp;
 
 sub _run {
     my ($self, $context, @args) = @_;
@@ -19,6 +18,7 @@ sub _run {
         return;
     }
 
+    my $url = jPod::ExternalSource::Perldocjp->url;
     my $ua = jPod::UserAgent->new( verbose => $self->{verbose} );
     $ua->mirror( $url => $tarball ) or return;
 
