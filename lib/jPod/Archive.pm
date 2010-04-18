@@ -6,15 +6,8 @@ use warnings;
 sub new {
     my ($class, %args) = @_;
 
-    bless \%args, $class;
-}
+    my $archive = delete $args{archive} or die "requires archive";
 
-sub extract {
-    my ($self, %args) = @_;
-
-    my $archive = $self->{archive} || delete $args{archive};
-
-    my $class;
     if ( $archive =~ /\.tar\.gz$/ ) {
         $class = 'jPod::Archive::Tar';
     }
@@ -28,8 +21,7 @@ sub extract {
         $class = 'jPod::Archive::Bzip2';
     }
     eval "require $class";
-    $class->new( archive => $archive, verbose => $self->{verbose} )
-          ->extract(%args);
+    $class->new( archive => $archive, %args );
 }
 
 1;
