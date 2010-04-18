@@ -13,6 +13,7 @@ requires 'IO::Uncompress::Bunzip2';
 requires 'Log::Dump::Class';
 requires 'LWP::UserAgent';
 requires 'Path::Extended';
+requires 'Plack';
 requires 'Sub::Install';
 requires 'Time::Piece';
 requires 'version';
