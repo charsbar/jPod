@@ -28,15 +28,11 @@ __END__
 
 =head1 NAME
 
-jPod::Script::ListPerldocjpPod
+jPod::Script::ListPerldocjpPod - list of pods in perldoc.jp
 
 =head1 SYNOPSIS
 
-=head1 DESCRIPTION
-
-=head1 METHODS
-
-=head2 new
+  > perl jpod list_perldocjp_pod
 
 =head1 AUTHOR
 

@@ -42,15 +42,11 @@ __END__
 
 =head1 NAME
 
-jPod::Script::RegisterPerldocjpPod
+jPod::Script::RegisterPerldocjpPod - register perldoc.jp pods into a database
 
 =head1 SYNOPSIS
 
-=head1 DESCRIPTION
-
-=head1 METHODS
-
-=head2 new
+  > perl jpod register_perldocjp_pod
 
 =head1 AUTHOR
 
