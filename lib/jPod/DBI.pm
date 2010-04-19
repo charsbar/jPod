@@ -35,6 +35,8 @@ sub rollback { shift->{dbh}->rollback }
 sub select {
     my ($self, $where, @bind_values) = @_;
 
+    $where = '' unless defined $where;
+
     my $sql = join ' ', "select * from", $self->table, $where;
 
     $self->{dbh}->selectrow_hashref($sql, undef, @bind_values);
@@ -42,6 +44,8 @@ sub select {
 
 sub select_all {
     my ($self, $where, @bind_values) = @_;
+
+    $where = '' unless defined $where;
 
     my $sql = join ' ', "select * from", $self->table, $where;
 
